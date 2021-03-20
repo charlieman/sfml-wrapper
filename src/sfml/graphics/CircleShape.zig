@@ -16,7 +16,7 @@ pub fn create(radius: f32) !CircleShape {
     if (circle == null)
         return sf.Error.nullptrUnknownReason;
 
-    sf.c.sfCircleShape_setFillColor(circle, sf.c.sfWhite);
+    sf.c.sfCircleShape_setFillColor(circle, sf.Color.White.toCSFML());
     sf.c.sfCircleShape_setRadius(circle, radius);
 
     return CircleShape{ .ptr = circle.? };
@@ -39,7 +39,7 @@ pub fn getFillColor(self: CircleShape) sf.Color {
     );
 
     std.debug.print("{}\n", rax);
-    
+
     var x: u32 = @truncate(u32, (rax & 0x00000000FFFFFFFF) >> 00);
     var y: u32 = @truncate(u32, (rax & 0xFFFFFFFF00000000) >> 32);
     return sf.Color.fromInteger(x);
@@ -98,8 +98,7 @@ pub fn getTexture(self: CircleShape) ?sf.Texture {
     var t = sf.c.sfCircleShape_getTexture(self.ptr);
     if (t != null) {
         return sf.Texture{ .const_ptr = t.? };
-    } else
-        return null;
+    } else return null;
 }
 /// Sets the texture of this shape
 pub fn setTexture(self: CircleShape, texture: ?sf.Texture) void {
@@ -130,7 +129,7 @@ ptr: *sf.c.sfCircleShape,
 
 test "circle shape: sane getters and setters" {
     const tst = @import("std").testing;
-    
+
     var circle = try CircleShape.create(30);
     defer circle.destroy();
 

@@ -16,7 +16,7 @@ pub fn create(size: sf.Vector2f) !RectangleShape {
     if (rect == null)
         return sf.Error.nullptrUnknownReason;
 
-    sf.c.sfRectangleShape_setFillColor(rect, sf.c.sfWhite);
+    sf.c.sfRectangleShape_setFillColor(rect, sf.Color.White.toCSFML());
     sf.c.sfRectangleShape_setSize(rect, size.toCSFML());
 
     return RectangleShape{ .ptr = rect.? };
@@ -87,8 +87,7 @@ pub fn getTexture(self: RectangleShape) ?sf.Texture {
     var t = sf.c.sfRectangleShape_getTexture(self.ptr);
     if (t != null) {
         return sf.Texture{ .const_ptr = t.? };
-    } else
-        return null;
+    } else return null;
 }
 /// Sets the texture of this shape
 pub fn setTexture(self: RectangleShape, texture: ?sf.Texture) void {
@@ -119,7 +118,7 @@ ptr: *sf.c.sfRectangleShape,
 
 test "rectangle shape: sane getters and setters" {
     const tst = @import("std").testing;
-    
+
     var rect = try RectangleShape.create(sf.Vector2f{ .x = 30, .y = 50 });
     defer rect.destroy();
 
